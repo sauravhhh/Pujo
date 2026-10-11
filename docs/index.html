@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Pujo — Durga Puja Countdown</title>
+<meta name="description" content="Countdown to Durga Puja 2026. Shubho Sharodiya!">
+<meta name="theme-color" content="#5c1111">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+  :root{
+    --gold:#e8b64c; --gold-light:#f6d789; --gold-deep:#b8860b;
+    --cream:#fff8e7; --maroon:#5c1111; --maroon-deep:#330808;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    color:var(--cream);
+    background:
+      radial-gradient(1200px 600px at 50% -10%, rgba(232,182,76,.14), transparent 60%),
+      radial-gradient(800px 500px at 85% 110%, rgba(232,182,76,.08), transparent 60%),
+      linear-gradient(180deg,#4a0d0d 0%, var(--maroon) 45%, var(--maroon-deep) 100%);
+    min-height:100vh; min-height:100dvh;
+    display:flex; flex-direction:column; align-items:center;
+    overflow-x:hidden; position:relative;
+  }
+  /* floating marigold petals */
+  .petal{position:fixed; top:-30px; border-radius:60% 40% 60% 40%;
+    background:radial-gradient(circle at 35% 35%, #f6d789, #e8930c);
+    opacity:.55; pointer-events:none; z-index:1;
+    animation:fall linear infinite;}
+  @keyframes fall{
+    0%{transform:translateY(-30px) rotate(0deg)}
+    100%{transform:translateY(110vh) rotate(340deg)}
+  }
+  .wrap{width:100%; max-width:480px; padding:28px 20px 40px; z-index:2;
+    display:flex; flex-direction:column; align-items:center; text-align:center;}
+  .eyebrow{font-size:12px; letter-spacing:4px; color:var(--gold-light);
+    text-transform:uppercase; margin-bottom:6px;}
+  .bengali{font-size:15px; color:var(--gold); margin-bottom:10px; letter-spacing:1px;}
+  h1.title{
+    font-family:Georgia,"Times New Roman",serif; font-weight:700;
+    font-size:64px; line-height:1;
+    background:linear-gradient(180deg,#ffe9b0 20%, var(--gold) 55%, #c9932b 80%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    text-shadow:0 2px 24px rgba(232,182,76,.25); margin-bottom:4px;}
+  .tagline{font-size:14px; color:#f3d9a4; opacity:.9; margin-bottom:26px;}
+  /* diya divider */
+  .diya-row{display:flex; align-items:center; gap:12px; width:100%; margin:6px 0 22px;}
+  .diya-row .line{flex:1; height:1px;
+    background:linear-gradient(90deg,transparent,rgba(232,182,76,.6),transparent);}
+  .flame{transform-origin:50% 90%; animation:flick 1.6s ease-in-out infinite;}
+  @keyframes flick{0%,100%{transform:scaleY(1) skewX(0)}30%{transform:scaleY(1.12) skewX(2deg)}
+    60%{transform:scaleY(.94) skewX(-2deg)}}
+  /* countdown */
+  .cd-label{font-size:13px; letter-spacing:2px; text-transform:uppercase;
+    color:var(--gold-light); margin-bottom:14px;}
+  .cd{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; width:100%; margin-bottom:8px;}
+  .cd-cell{background:rgba(255,248,231,.06); border:1px solid rgba(232,182,76,.35);
+    border-radius:14px; padding:14px 4px 10px;
+    box-shadow:0 4px 18px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.08);}
+  .cd-num{font-family:Georgia,serif; font-size:34px; font-weight:700; color:var(--gold-light);
+    font-variant-numeric:tabular-nums; line-height:1;}
+  .cd-unit{font-size:10px; letter-spacing:2px; text-transform:uppercase;
+    color:#e9c98a; margin-top:6px; opacity:.85;}
+  .cd-sub{font-size:13px; color:#f3d9a4; margin:10px 0 26px;}
+  .cd-sub b{color:var(--gold-light);}
+  /* celebration hero (during puja) */
+  .celebrate{font-family:Georgia,serif; font-size:30px; color:var(--gold-light);
+    margin:6px 0 4px; line-height:1.3;}
+  .celebrate-sub{font-size:14px; color:#f3d9a4; margin-bottom:22px;}
+  /* calendar */
+  .cal-title{font-family:Georgia,serif; font-size:22px; color:var(--gold-light); margin-bottom:4px;}
+  .cal-sub{font-size:12px; color:#e9c98a; opacity:.85; margin-bottom:16px; letter-spacing:1px;}
+  .day{background:rgba(255,248,231,.05); border:1px solid rgba(232,182,76,.28);
+    border-radius:14px; padding:14px 16px; width:100%; text-align:left;
+    display:flex; gap:14px; align-items:center; margin-bottom:10px;
+    transition:transform .15s ease;}
+  .day .dnum{flex:0 0 52px; height:52px; border-radius:50%;
+    border:1px solid rgba(232,182,76,.5); display:flex; flex-direction:column;
+    align-items:center; justify-content:center; background:rgba(232,182,76,.08);}
+  .day .dnum .dd{font-family:Georgia,serif; font-size:20px; font-weight:700; color:var(--gold-light); line-height:1;}
+  .day .dnum .mm{font-size:9px; letter-spacing:1px; color:#e9c98a; text-transform:uppercase;}
+  .day .dt{font-size:15px; font-weight:600; color:var(--cream);}
+  .day .dn{font-size:12.5px; color:#f0d9a8; opacity:.9; margin-top:2px; line-height:1.45;}
+  .day.today{background:rgba(232,182,76,.14); border-color:var(--gold);
+    box-shadow:0 0 22px rgba(232,182,76,.25);}
+  .day.today .dt::after{content:" • today"; font-size:11px; color:var(--gold-light);
+    letter-spacing:1px; text-transform:uppercase;}
+  .day.done{opacity:.45;}
+  footer{margin-top:30px; font-size:13px; color:#e9c98a; letter-spacing:1px;}
+  footer .b{font-size:15px;}
+  @media (max-width:360px){ h1.title{font-size:54px} .cd-num{font-size:28px} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">Sharodiya 2026</div>
+  <div class="bengali">শুভ শারদীয়া</div>
+  <h1 class="title">Pujo</h1>
+  <div class="tagline">The homecoming of Uma — counted down to the second</div>
+
+  <div class="diya-row">
+    <div class="line"></div>
+    <svg width="34" height="30" viewBox="0 0 34 30" aria-hidden="true">
+      <ellipse class="flame" cx="17" cy="9" rx="4.5" ry="7" fill="#f6d789"/>
+      <ellipse class="flame" cx="17" cy="11" rx="2.4" ry="4" fill="#e8930c"/>
+      <path d="M4 20 Q17 16 30 20 Q27 27 17 27 Q7 27 4 20 Z" fill="#c9932b"/>
+      <path d="M4 20 Q17 16 30 20 L28 22 Q17 18.5 6 22 Z" fill="#8a5f14"/>
+    </svg>
+    <div class="line"></div>
+  </div>
+
+  <div id="countdownZone" style="width:100%">
+    <div class="cd-label">until Maha Shashti</div>
+    <div class="cd">
+      <div class="cd-cell"><div class="cd-num" id="d">–</div><div class="cd-unit">Days</div></div>
+      <div class="cd-cell"><div class="cd-num" id="h">–</div><div class="cd-unit">Hours</div></div>
+      <div class="cd-cell"><div class="cd-num" id="m">–</div><div class="cd-unit">Mins</div></div>
+      <div class="cd-cell"><div class="cd-num" id="s">–</div><div class="cd-unit">Secs</div></div>
+    </div>
+    <div class="cd-sub">Bodhan begins <b>16 October</b> — the Goddess is invoked</div>
+  </div>
+
+  <div id="celebrateZone" style="display:none; width:100%">
+    <div class="celebrate" id="celebrateText">Shubho Pujo!</div>
+    <div class="celebrate-sub" id="celebrateSub"></div>
+  </div>
+
+  <div class="cal-title">The Five Days</div>
+  <div class="cal-sub">16 — 21 OCTOBER 2026</div>
+  <div id="days" style="width:100%"></div>
+
+  <footer><span class="b">🪔</span> &nbsp;Shubho Sharodiya&nbsp; <span class="b">🪔</span></footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  // ---- dates (IST) ----
+  var SHASHTI = new Date('2026-10-16T00:00:00+05:30').getTime();
+  var PUJA_END = new Date('2026-10-22T00:00:00+05:30').getTime(); // after Dashami
+  var DAYS = [
+    {name:'Maha Shashti',  d:'16', m:'Oct', date:'2026-10-16', note:'Kalparambha & Bodhan — the Goddess is invoked, her face unveiled'},
+    {name:'Maha Saptami',  d:'17', m:'Oct', date:'2026-10-17', end:'2026-10-18', note:'Nabapatrika Snan — the main worship begins'},
+    {name:'Maha Ashtami',  d:'19', m:'Oct', date:'2026-10-19', note:'Pushpanjali, Kumari Puja & Sandhi Puja — the most sacred day'},
+    {name:'Maha Navami',   d:'20', m:'Oct', date:'2026-10-20', note:'Navami Puja, Homa & Maha Bhog'},
+    {name:'Vijaya Dashami',d:'21', m:'Oct', date:'2026-10-21', note:'Sindoor Khela & Bisharjan — bidding Uma farewell'}
+  ];
+  function istToday(){
+    var n = new Date();
+    var ist = new Date(n.getTime() + (n.getTimezoneOffset() + 330) * 60000);
+    return ist.toISOString().slice(0,10);
+  }
+  function inRange(t, s, e){ return t >= s && t <= (e || s); }
+
+  // ---- render calendar ----
+  var today = istToday();
+  var daysEl = document.getElementById('days');
+  var currentName = null;
+  DAYS.forEach(function(dy){
+    var end = dy.end || dy.date;
+    var cls = 'day';
+    if (today > end) cls += ' done';
+    if (inRange(today, dy.date, end)){ cls += ' today'; currentName = dy.name; }
+    var div = document.createElement('div');
+    div.className = cls;
+    div.innerHTML =
+      '<div class="dnum"><span class="dd">'+dy.d+'</span><span class="mm">'+dy.m+'</span></div>'+
+      '<div><div class="dt">'+dy.name+'</div><div class="dn">'+dy.note+'</div></div>';
+    daysEl.appendChild(div);
+  });
+
+  // ---- countdown / phases ----
+  var now = Date.now();
+  var cdZone = document.getElementById('countdownZone');
+  var ceZone = document.getElementById('celebrateZone');
+  if (now < SHASHTI){
+    var dEl=document.getElementById('d'), hEl=document.getElementById('h'),
+        mEl=document.getElementById('m'), sEl=document.getElementById('s');
+    function tick(){
+      var diff = SHASHTI - Date.now();
+      if (diff <= 0){ location.reload(); return; }
+      var dd = Math.floor(diff/864e5),
+          hh = Math.floor(diff/36e5)%24,
+          mm = Math.floor(diff/6e4)%60,
+          ss = Math.floor(diff/1e3)%60;
+      dEl.textContent = dd; hEl.textContent = String(hh).padStart(2,'0');
+      mEl.textContent = String(mm).padStart(2,'0'); sEl.textContent = String(ss).padStart(2,'0');
+    }
+    tick(); setInterval(tick, 1000);
+  } else if (now < PUJA_END){
+    cdZone.style.display = 'none'; ceZone.style.display = 'block';
+    document.getElementById('celebrateText').textContent =
+      currentName ? 'Shubho ' + currentName + '!' : 'Shubho Pujo!';
+    document.getElementById('celebrateSub').textContent =
+      'Uma is home — soak in every moment of the five days';
+  } else {
+    cdZone.style.display = 'none'; ceZone.style.display = 'block';
+    document.getElementById('celebrateText').textContent = 'Shubho Bijoya!';
+    document.getElementById('celebrateSub').textContent =
+      'Bisharjan is done — until Uma returns next year';
+  }
+
+  // ---- petals ----
+  var colors = ['#f6d789','#e8930c','#e8b64c'];
+  for (var i=0;i<10;i++){
+    var p = document.createElement('div');
+    p.className = 'petal';
+    var sz = 6 + Math.random()*10;
+    p.style.width = sz+'px'; p.style.height = sz*0.8+'px';
+    p.style.left = (Math.random()*100)+'vw';
+    p.style.background = 'radial-gradient(circle at 35% 35%, '+colors[i%3]+', #b86a08)';
+    p.style.animationDuration = (7+Math.random()*8)+'s';
+    p.style.animationDelay = (-Math.random()*12)+'s';
+    document.body.appendChild(p);
+  }
+
+  // ---- PWA ----
+  if ('serviceWorker' in navigator){
+    window.addEventListener('load', function(){
+      navigator.serviceWorker.register('sw.js').catch(function(){});
+    });
+  }
+})();
+</script>
+</body>
+</html>
