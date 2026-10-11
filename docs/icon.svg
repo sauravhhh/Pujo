@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="35%" r="80%">
+      <stop offset="0%" stop-color="#8a1a1a"/>
+      <stop offset="100%" stop-color="#3d0a0a"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f6d789"/>
+      <stop offset="100%" stop-color="#c9932b"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f6d789" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#f6d789" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect x="0" y="0" width="512" height="512" rx="112" fill="url(#bg)"/>
+  <circle cx="256" cy="205" r="120" fill="url(#glow)"/>
+  <!-- flame -->
+  <path d="M256 118 C 288 168, 296 196, 256 236 C 216 196, 224 168, 256 118 Z" fill="url(#gold)"/>
+  <path d="M256 168 C 268 190, 270 206, 256 222 C 242 206, 244 190, 256 168 Z" fill="#fff3d0" opacity="0.85"/>
+  <!-- diya bowl -->
+  <path d="M128 268 Q256 238 384 268 Q368 344 256 344 Q144 344 128 268 Z" fill="url(#gold)"/>
+  <path d="M128 268 Q256 238 384 268 L372 286 Q256 258 140 286 Z" fill="#7a4d0d" opacity="0.55"/>
+  <ellipse cx="256" cy="356" rx="72" ry="10" fill="#000" opacity="0.25"/>
+  <!-- sparkles -->
+  <circle cx="150" cy="160" r="7" fill="#f6d789" opacity="0.9"/>
+  <circle cx="368" cy="150" r="5" fill="#f6d789" opacity="0.7"/>
+  <circle cx="392" cy="250" r="6" fill="#f6d789" opacity="0.5"/>
+</svg>
