@@ -27,20 +27,16 @@
     display:flex; flex-direction:column; align-items:center;
     overflow-x:hidden; position:relative;
   }
-  body::before{content:""; position:fixed; inset:0; z-index:0;
-    background:url('bg.jpg') center top/cover no-repeat;}
-  body::after{content:""; position:fixed; inset:0; z-index:1;
-    background:linear-gradient(180deg, rgba(26,6,6,.80) 0%, rgba(26,6,6,.60) 38%, rgba(18,4,4,.86) 100%);}
   /* floating marigold petals */
   .petal{position:fixed; top:-30px; border-radius:60% 40% 60% 40%;
     background:radial-gradient(circle at 35% 35%, #f6d789, #e8930c);
-    opacity:.55; pointer-events:none; z-index:2;
+    opacity:.55; pointer-events:none; z-index:1;
     animation:fall linear infinite;}
   @keyframes fall{
     0%{transform:translateY(-30px) rotate(0deg)}
     100%{transform:translateY(110vh) rotate(340deg)}
   }
-  .wrap{width:100%; max-width:480px; padding:28px 20px 40px; z-index:3;
+  .wrap{width:100%; max-width:480px; padding:28px 20px 40px; z-index:2;
     display:flex; flex-direction:column; align-items:center; text-align:center;}
   .eyebrow{font-size:12px; letter-spacing:4px; color:var(--gold-light);
     text-transform:uppercase; margin-bottom:6px;}
